@@ -44,7 +44,7 @@ def main(args):
         # get tensor for feed forward
         images = graph.get_tensor_by_name('images:0')
         labels = graph.get_tensor_by_name('labels:0')
-        prediction = graph.get_tensor_by_name('prediction:0')
+        prediction = graph.get_tensor_by_name('accuracy/prediction:0')
         training = graph.get_tensor_by_name('training:0')
 
         predictions = 0
