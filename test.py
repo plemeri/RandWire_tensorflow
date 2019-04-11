@@ -9,7 +9,7 @@ from dataset import iter_utils
 def args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--class_num', type=int, default=10, help='number of class')  # number of class
-    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint_4/randwire_cifar10-234375', help='directory for checkpoint')  # directory for checkpoint
+    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint', help='directory for checkpoint')  # directory for checkpoint
     parser.add_argument('--test_record_dir', type=str, default='./dataset/cifar10/test.tfrecord', help='directory for test record')  # directory for test images
     parser.add_argument('--batch_size', type=int, default=256, help='number of images for each batch')  # number of images for each batch
     args = parser.parse_args()
@@ -26,8 +26,8 @@ def main(args):
     with tf.Session() as sess:
         #restoring network and weight data
         try:
-            saver = tf.train.import_meta_graph(args.checkpoint_dir + '.meta')
-            saver.restore(sess, args.checkpoint_dir)
+            saver = tf.train.import_meta_graph(tf.train.latest_checkpoint(args.checkpoint_dir) + '.meta')
+            saver.restore(sess, tf.train.latest_checkpoint(args.checkpoint_dir))
         except:
             print('failed to load network and checkpoint')
             return
