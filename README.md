@@ -46,7 +46,7 @@ python train.py --class_num 10 --image_shape 28 28 1 --stages 4 --channel_count 
 Options:
 - options are same as Cifar10
 
-##Testing
+## Testing
 ```sh
 python test.py --class_num --checkpoint_dir ./checkpoint --test_record_dir ./dataset/cifar10/test.tfrecord --batch_size 256
 ```
