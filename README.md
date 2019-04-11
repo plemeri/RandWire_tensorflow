@@ -83,3 +83,15 @@ test.py loads network graph and tensors from meta data and evalutes.
 - I'm currently working on drop connection for regularization and downloading ImageNet dataset to train on my implementation.
 
 - I added dropout layer after the Relu-Conv-BN triplet unit for regularization. You can set dropout_rate 0.0 to disable it.
+
+- In train.py, you can use `small_regime` or `regular_regime` instead of `my_regime`. `my_regime` is just for experimental purpose.
+```
+# output logit from NN
+output = RandWire.my_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
+                            args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False, training)
+# output = RandWire.small_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
+#                             args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False,
+#                             training)
+# output = RandWire.regular_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
+#                             args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', training)
+```
