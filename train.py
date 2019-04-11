@@ -22,7 +22,7 @@ def args():
     parser.add_argument('--val_set_size', type=int, default=10000, help='number of images for validation set, 0 for skip validation')  # number of images for validation set, 0 for skip validation
     parser.add_argument('--batch_size', type=int, default=64, help='number of images for each batch')  # number of images for each batch
     parser.add_argument('--epochs', type=int, default=300, help='total epochs to train')  # total epochs to train
-    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint4', help='directory for checkpoint')  # directory for checkpoint
+    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint', help='directory for checkpoint')  # directory for checkpoint
     parser.add_argument('--checkpoint_name', type=str, default='randwire_cifar10', help='filename for checkpoint')
     parser.add_argument('--train_record_dir', type=str, default='./dataset/cifar10/train.tfrecord', help='directory for training records')  # directory for training images
     parser.add_argument('--val_record_dir', type=str, default='./dataset/cifar10/test.tfrecord', help='directory for validation records')  # directory for training labels
