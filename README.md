@@ -12,6 +12,18 @@ tensorflow implementation of [Exploring Randomly Wired Neural Networks for Image
 Please download dataset from this [link](https://drive.google.com/drive/folders/1kr0bGAmf3xuOUkw1DTA8gSBsO9LTObyk?usp=sharing)
 Both Cifar10 and MNIST dataset are converted into tfrecords format for conveinence. Put `train.tfrecords`, `test.tfrecords` files into `dataset/cifar10`, `dataset/mnist`
 
+You can create tfrecord file with your own dataset with `dataset/dataset_generator.py`.
+```sh
+python dataset_generator.py --image_dir ./cifar10/test/images --label_dir ./cifar10/test/labels --output_dir ./cifar10 --output_filename test.tfrecord
+```
+
+Options:
+
+- `--image_dir` (str) - directory of your image files. it is recommended to set the name of images to integers like `0.png`
+- `--label_dir` (str) - directory of your label files. it is recommended to set the name of images to integers like `0.txt`. label text file must contain class label in integer like `8`. 
+- `--output_dir` (str) - directory for output tfrecord file.
+- `--outpuf_filename` (str) - filename of output tfrecord file.
+
 ## Training
 
 **Cifar 10**
@@ -67,3 +79,7 @@ test.py loads network graph and tensors from meta data and evalutes.
 - While training, it will save the checkpoint with best validation accuracy.
 
 - While training, it will log training and validation accuracy and loss in `[YOUR_CHECKPOINT_DIRECTORY]/log`. You can visualize yourself with tensorboard.
+
+- I'm currently working on drop connection for regularization, ImageNet dataset, and so on.
+
+- I added dropout layer after the Relu-Conv-BN triplet unit for regularization. You can set dropout_rate 0.0 to disable it.
