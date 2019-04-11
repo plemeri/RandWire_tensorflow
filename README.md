@@ -80,6 +80,6 @@ test.py loads network graph and tensors from meta data and evalutes.
 
 - While training, it will log training and validation accuracy and loss in `[YOUR_CHECKPOINT_DIRECTORY]/log`. You can visualize yourself with tensorboard.
 
-- I'm currently working on drop connection for regularization, ImageNet dataset, and so on.
+- I'm currently working on drop connection for regularization and downloading ImageNet dataset to train on my implementation.
 
 - I added dropout layer after the Relu-Conv-BN triplet unit for regularization. You can set dropout_rate 0.0 to disable it.
