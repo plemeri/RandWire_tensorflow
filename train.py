@@ -24,7 +24,6 @@ def args():
     parser.add_argument('--epochs', type=int, default=300, help='total epochs to train')  # total epochs to train
     parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint4', help='directory for checkpoint')  # directory for checkpoint
     parser.add_argument('--checkpoint_name', type=str, default='randwire_cifar10', help='filename for checkpoint')
-    parser.add_argument('--use_saved_network', type=bool, default=True)
     parser.add_argument('--train_record_dir', type=str, default='./dataset/cifar10/train.tfrecord', help='directory for training records')  # directory for training images
     parser.add_argument('--val_record_dir', type=str, default='./dataset/cifar10/test.tfrecord', help='directory for validation records')  # directory for training labels
 
