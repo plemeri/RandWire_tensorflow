@@ -10,7 +10,7 @@ tensorflow implementation of [Exploring Randomly Wired Neural Networks for Image
 ## Dataset
 
 Please download dataset from this [link](https://drive.google.com/drive/folders/1kr0bGAmf3xuOUkw1DTA8gSBsO9LTObyk?usp=sharing)
-Both Cifar10 and MNIST dataset are converted into tfrecords format for conveinence. Put **train.tfrecords, test.tfrecords** files into **dataset/cifar10, dataset/mnist**
+Both Cifar10 and MNIST dataset are converted into tfrecords format for conveinence. Put `train.tfrecords`, `test.tfrecords` files into `dataset/cifar10`, `dataset/mnist`
 
 ## Training
 
@@ -25,7 +25,7 @@ Options:
 - `--stages` (int) - stage (or block) number of randwire network. 
 - `--channel_count` (int) - channel count of randwire network. please refer to the paper
 - `--graph_model` (str) - currently randwire has 3 random graph models. you can choose from 'er', 'ba' and 'ws'.
-- `--graph_param` (float nargs) - first value is node count. for 'er' and 'ba', there are one extra parameter so it would be like **32 0.4** or **32 7**. for 'ws' there are two extra parameters like above.
+- `--graph_param` (float nargs) - first value is node count. for 'er' and 'ba', there are one extra parameter so it would be like `32 0.4` or `32 7`. for 'ws' there are two extra parameters like above.
 - `--learning_rate` (float) - initial learning rate
 - `--momentum` (float) - momentum from momentum optimizer
 - `--weight_decay` (float) - weight decay factor
@@ -66,4 +66,4 @@ test.py loads network graph and tensors from meta data and evalutes.
 
 - While training, it will save the checkpoint with best validation accuracy.
 
-- While training, it will log training and validation accuracy and loss in **[YOUR_CHECKPOINT_DIRECTORY]/log**. You can visualize yourself with tensorboard.
+- While training, it will log training and validation accuracy and loss in `[YOUR_CHECKPOINT_DIRECTORY]/log`. You can visualize yourself with tensorboard.
