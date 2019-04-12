@@ -94,14 +94,17 @@ def my_regime(input, stages, filters, classes, dropout_rate, graph_model, graph_
             input = tf.layers.separable_conv2d(input, filters=int(filters / 2), kernel_size=[3, 3], strides=[1, 1],
                                                padding='SAME')
 
-    input = conv_block(input, 3, filters, 2, dropout_rate, training, 'conv2')
-
+    #input = conv_block(input, 3, filters, 2, dropout_rate, training, 'conv2')
+    input = conv_block(input, 3, filters, 1, dropout_rate, training, 'conv2)
+    
     for stage in range(3, stages+1):
         graph_data = gg.graph_generator(graph_model, graph_param, graph_file_path, 'conv' + str(stage) + '_' + graph_model)
         input = build_stage(input, filters, dropout_rate, training, graph_data, 'conv' + str(stage))
         filters *= 2
 
-    input = conv_block(input, 1, 128, 1, dropout_rate, training, 'classifier')
+    #input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'classifier')
+    input = conv_block(input, 1, input.shape[-1], dropout_rate, training, 'classifier')
+                       
     with tf.variable_scope('classifier'):
         input = tf.layers.average_pooling2d(input, pool_size=input.shape[1:3], strides=[1, 1])
         input = tf.layers.flatten(input)
