@@ -33,7 +33,7 @@ python train.py --class_num 10 --image_shape 32 32 3 --stages 5 --channel_count 
 
 Options:
 - `--class_num` (int) - output number of class. Cifar10 has 10 classes.
-- `--image_shape` (int nargs) - shape of input image. Cifar10 has 32*32*3 shape.
+- `--image_shape` (int nargs) - shape of input image. Cifar10 has 32 32 3 shape.
 - `--stages` (int) - stage (or block) number of randwire network. 
 - `--channel_count` (int) - channel count of randwire network. please refer to the paper
 - `--graph_model` (str) - currently randwire has 3 random graph models. you can choose from 'er', 'ba' and 'ws'.
