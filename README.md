@@ -74,11 +74,11 @@ test.py loads network graph and tensors from meta data and evalutes.
 
 - I multiplied 0.1 to the learning rate in 50% and 75% of training phase rather than using half-period-cosine shaped learning rate decay. I'll add this later.
 
-- I didn't use stride 2 for the initial convolutional layer since cifar10 and mnist has low resolution.
+- I made an option `init_subsample` in `my_regime` and `small_regime` in `RandWire.py` not to use stride 2 for the initial convolutional layer since cifar10 and mnist has low resolution. if you set `init_subsample` False, then it will use stride 2.
 
 - While training, it will save the checkpoint with best validation accuracy.
 
-- While training, it will log training and validation accuracy and loss in `[YOUR_CHECKPOINT_DIRECTORY]/log`. You can visualize yourself with tensorboard.
+- While training, it will save tensorboard log for training and validation accuracy and loss in `[YOUR_CHECKPOINT_DIRECTORY]/log`. You can visualize yourself with tensorboard.
 
 - I'm currently working on drop connection for regularization and downloading ImageNet dataset to train on my implementation.
 
