@@ -11,7 +11,7 @@ def args():
     parser.add_argument('--class_num', type=int, default=10, help='number of class')  # number of class
     parser.add_argument('--image_shape', type=int, nargs='+', default=[32, 32, 3], help='shape of image - height, width, channel')  # shape of image - height, width, channel
     parser.add_argument('--stages', type=int, default=4, help='stage number of randwire')  # number of dense blocks
-    parser.add_argument('--channel_count', type=int, default=78)
+    parser.add_argument('--channel_count', type=int, default=109)
     parser.add_argument('--graph_model', type=str, default='ws')
     parser.add_argument('--graph_param', type=float, nargs='+', default=[32, 4, 0.75])
     parser.add_argument('--dropout_rate', type=float, default=0.0, help='dropout rate for dropout')  # dropout rate for dropout
@@ -21,10 +21,10 @@ def args():
     parser.add_argument('--lr_decay_steps', type=int, default=2000,
                         help='decaying steps for exponential decay of learning rate')  #2000 # decaying steps for exponential decay of learning rate
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum for momentum optimizer')  # momentum for momentum optimizer
-    parser.add_argument('--weight_decay', type=float, default=1e-4, help='weight decay factor')  # weight decay factor
+    parser.add_argument('--weight_decay', type=float, default=5e-4, help='weight decay factor')  # weight decay factor
     parser.add_argument('--train_set_size', type=int, default=50000, help='number of images for training set')  # number of images for training set
     parser.add_argument('--val_set_size', type=int, default=10000, help='number of images for validation set, 0 for skip validation')  # number of images for validation set, 0 for skip validation
-    parser.add_argument('--batch_size', type=int, default=64, help='number of images for each batch')  # number of images for each batch
+    parser.add_argument('--batch_size', type=int, default=100, help='number of images for each batch')  # number of images for each batch
     parser.add_argument('--epochs', type=int, default=300, help='total epochs to train')  # total epochs to train
     parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint', help='directory for checkpoint')  # directory for checkpoint
     parser.add_argument('--checkpoint_name', type=str, default='randwire_cifar10', help='filename for checkpoint')
