@@ -16,6 +16,10 @@ def args():
     parser.add_argument('--graph_param', type=float, nargs='+', default=[32, 4, 0.75])
     parser.add_argument('--dropout_rate', type=float, default=0.0, help='dropout rate for dropout')  # dropout rate for dropout
     parser.add_argument('--learning_rate', type=float, default=1e-1, help='initial learning rate')  # initial learning rate
+    parser.add_argument('--lr_decay_rate', type=float, default=0.96,
+                        help='decreasing rate for for exponential decay of learning rate')  # decreasing rate for for exponential decay of learning rate
+    parser.add_argument('--lr_decay_steps', type=int, default=2000,
+                        help='decaying steps for exponential decay of learning rate')  #2000 # decaying steps for exponential decay of learning rate
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum for momentum optimizer')  # momentum for momentum optimizer
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='weight decay factor')  # weight decay factor
     parser.add_argument('--train_set_size', type=int, default=50000, help='number of images for training set')  # number of images for training set
@@ -46,8 +50,8 @@ def main(args):
     training = tf.placeholder('bool', name='training')  # placeholder for training boolean (is training)
     global_step = tf.get_variable(name='global_step', shape=[], dtype='int64', trainable=False)  # variable for global step
     best_accuracy = tf.get_variable(name='best_accuracy', dtype='float32', trainable=False, initializer=0.0)
-    learning_rate = tf.get_variable(name='learning_rate', dtype='float32', trainable=False, initializer=tf.constant(args.learning_rate))
-
+    # learning_rate = tf.get_variable(name='learning_rate', dtype='float32', trainable=False, initializer=tf.constant(args.learning_rate))
+    learning_rate = tf.train.exponential_decay(args.learning_rate, global_step, args.lr_decay_steps, args.lr_decay_rate)
     # output logit from NN
     output = RandWire.my_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
                                 args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False, training)
@@ -113,9 +117,9 @@ def main(args):
 
         for epoch_ in range(init_epoch + 1, args.epochs + 1):
 
-            if epoch_ == int(args.epochs * 0.5) or epoch_ == int(args.epochs * 0.75):
-                learning_rate = learning_rate / 10
-                print('learning rate change ', sess.run(learning_rate))
+            # if epoch_ == int(args.epochs * 0.5) or epoch_ == int(args.epochs * 0.75):
+            #     learning_rate = learning_rate / 10
+            #     print('learning rate change ', sess.run(learning_rate))
 
             # train
             while gstep * args.batch_size < epoch_ * args.train_set_size:
