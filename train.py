@@ -85,6 +85,7 @@ def main(args):
     val_accuracy_summary = tf.summary.scalar("val_acc", accuracy)
 
     saver = tf.train.Saver()
+    best_saver = tf.train.Saver()
 
     with tf.Session() as sess:
         merged = tf.summary.merge_all()
@@ -160,7 +161,7 @@ def main(args):
             if best_accuracy.eval() < np.mean(predictions):
                 print('save checkpoint')
                 best_accuracy = tf.assign(best_accuracy, np.mean(predictions))
-                saver.save(sess, args.checkpoint_dir + '/best/' + args.checkpoint_name)
+                best_saver.save(sess, args.checkpoint_dir + '/best/' + args.checkpoint_name)
 
 
 if __name__ == '__main__':
