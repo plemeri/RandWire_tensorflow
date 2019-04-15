@@ -28,7 +28,7 @@ Options:
 
 **Cifar 10**
 ```sh
-python train.py --class_num 10 --image_shape 32 32 3 --stages 5 --channel_count 64 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 64 --epochs 300 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar10 --train_record_dir ./dataset/cifar10/train.tfrecord --val_record_dir ./dataset/cifar10/test.tfrecord
+python train.py --class_num 10 --image_shape 32 32 3 --stages 5 --channel_count 64 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --lr_decay_rate 0.96 --lr_decay_steps 2000 --train_set_size 50000 --val_set_size 10000 --batch_size 64 --epochs 300 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar10 --train_record_dir ./dataset/cifar10/train.tfrecord --val_record_dir ./dataset/cifar10/test.tfrecord
 ```
 
 Options:
@@ -39,6 +39,8 @@ Options:
 - `--graph_model` (str) - currently randwire has 3 random graph models. you can choose from 'er', 'ba' and 'ws'.
 - `--graph_param` (float nargs) - first value is node count. for 'er' and 'ba', there are one extra parameter so it would be like `32 0.4` or `32 7`. for 'ws' there are two extra parameters like above.
 - `--learning_rate` (float) - initial learning rate
+- `--lr_decacy_rate` (float) - learning rate decay rate for exponential decay
+- `--lr_decay_steps` (int) - learning rate decay steps for exponential decay
 - `--momentum` (float) - momentum from momentum optimizer
 - `--weight_decay` (float) - weight decay factor
 - `--train_set_size` (int) - number of training data. Cifar10 has 50000 data.
@@ -52,7 +54,7 @@ Options:
 
 **MNIST**
 ```sh
-python train.py --class_num 10 --image_shape 28 28 1 --stages 4 --channel_count 32 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 64 --epochs 300 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar10 --train_record_dir ./dataset/cifar10/train.tfrecord --val_record_dir ./dataset/cifar10/test.tfrecord
+python train.py --class_num 10 --image_shape 28 28 1 --stages 4 --channel_count 32 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --lr_decay_rate 0.96 --lr_decay_steps 2000 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 64 --epochs 300 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar10 --train_record_dir ./dataset/cifar10/train.tfrecord --val_record_dir ./dataset/cifar10/test.tfrecord
 ```
 
 Options:
@@ -72,7 +74,7 @@ test.py loads network graph and tensors from meta data and evalutes.
 
 **Implementation Details**
 
-- I multiplied 0.1 to the learning rate in 50% and 75% of training phase rather than using half-period-cosine shaped learning rate decay. I'll add this later.
+- I used exponential learning rate decay.
 
 - I made an option `init_subsample` in `my_regime` and `small_regime` in `RandWire.py` not to use stride 2 for the initial convolutional layer since cifar10 and mnist has low resolution. if you set `init_subsample` False, then it will use stride 2.
 
