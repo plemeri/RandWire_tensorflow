@@ -20,8 +20,8 @@ def batch_iterator(dataset_dir, epochs, batch_size, augmentation=None, training=
     if os.path.isfile(dataset_dir) is False:
         raise FileNotFoundError(dataset_dir, 'not exist')
     dataset = tf.data.TFRecordDataset(dataset_dir)
-    dataset = dataset.map(standardization)
     dataset = dataset.map(parse_tfrecord)
+    dataset = dataset.map(standardization)
     if training is True:
         dataset = dataset.shuffle(100000)
         dataset = dataset.repeat(epochs)
