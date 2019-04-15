@@ -24,6 +24,9 @@ Options:
 - `--output_dir` (str) - directory for output tfrecord file.
 - `--outpuf_filename` (str) - filename of output tfrecord file.
 
+## Experiments
+
+I trained on Cifar10 dataset and get 90.78% on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory.
 ## Training
 
 **Cifar 10**
