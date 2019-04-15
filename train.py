@@ -63,7 +63,8 @@ def main(args):
 
     #loss and optimizer
     with tf.variable_scope('losses'):
-        loss = tf.nn.softmax_cross_entropy_with_logits_v2(labels=labels, logits=output)
+        # loss = tf.nn.softmax_cross_entropy_with_logits_v2(labels=labels, logits=output)
+        loss = tf.losses.softmax_cross_entropy(labels, output, label_smoothing=0.1)
         loss = tf.reduce_mean(loss, name='loss')
         l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
 
