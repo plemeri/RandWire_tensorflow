@@ -94,7 +94,7 @@ def main(args):
         writer = tf.summary.FileWriter(args.checkpoint_dir + '/log', sess.graph)
 
         sess.run(tf.global_variables_initializer())
-        train_iterator = iter_utils.batch_iterator(args.train_record_dir, args.epochs, args.batch_size, True)
+        train_iterator = iter_utils.batch_iterator(args.train_record_dir, args.epochs, args.batch_size, [lambda image, label: iter_utils.pad_and_crop(image, label, args.image_shape, 4), iter_utils.flip], True)
         train_images_batch, train_labels_batch = train_iterator.get_next()
         val_iterator = iter_utils.batch_iterator(args.val_record_dir, args.epochs, args.batch_size)
         val_images_batch, val_labels_batch = val_iterator.get_next()
