@@ -16,17 +16,13 @@ def args():
     parser.add_argument('--graph_param', type=float, nargs='+', default=[32, 4, 0.75])
     parser.add_argument('--dropout_rate', type=float, default=0.0, help='dropout rate for dropout')  # dropout rate for dropout
     parser.add_argument('--learning_rate', type=float, default=1e-1, help='initial learning rate')  # initial learning rate
-    parser.add_argument('--lr_decay_rate', type=float, default=0.96,
-                        help='decreasing rate for for exponential decay of learning rate')  # decreasing rate for for exponential decay of learning rate
-    parser.add_argument('--lr_decay_steps', type=int, default=2000,
-                        help='decaying steps for exponential decay of learning rate')  #2000 # decaying steps for exponential decay of learning rate
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum for momentum optimizer')  # momentum for momentum optimizer
-    parser.add_argument('--weight_decay', type=float, default=5e-4, help='weight decay factor')  # weight decay factor
+    parser.add_argument('--weight_decay', type=float, default=1e-4, help='weight decay factor')  # weight decay factor
     parser.add_argument('--train_set_size', type=int, default=50000, help='number of images for training set')  # number of images for training set
     parser.add_argument('--val_set_size', type=int, default=10000, help='number of images for validation set, 0 for skip validation')  # number of images for validation set, 0 for skip validation
     parser.add_argument('--batch_size', type=int, default=100, help='number of images for each batch')  # number of images for each batch
-    parser.add_argument('--epochs', type=int, default=300, help='total epochs to train')  # total epochs to train
-    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint', help='directory for checkpoint')  # directory for checkpoint
+    parser.add_argument('--epochs', type=int, default=100, help='total epochs to train')  # total epochs to train
+    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint_stocdec_rg3', help='directory for checkpoint')  # directory for checkpoint
     parser.add_argument('--checkpoint_name', type=str, default='randwire_cifar10', help='filename for checkpoint')
     parser.add_argument('--train_record_dir', type=str, default='./dataset/cifar10/train.tfrecord', help='directory for training records')  # directory for training images
     parser.add_argument('--val_record_dir', type=str, default='./dataset/cifar10/test.tfrecord', help='directory for validation records')  # directory for training labels
@@ -37,7 +33,7 @@ def args():
 
 # main function for training
 def main(args):
-    os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+    os.environ['CUDA_VISIBLE_DEVICES'] = "1"
     print('+++++++++++++++++++++++++++++++++++++++++++++++++')
     print('[Input Arguments]')
     for arg in args.__dict__:
@@ -50,10 +46,10 @@ def main(args):
     training = tf.placeholder('bool', name='training')  # placeholder for training boolean (is training)
     global_step = tf.get_variable(name='global_step', shape=[], dtype='int64', trainable=False)  # variable for global step
     best_accuracy = tf.get_variable(name='best_accuracy', dtype='float32', trainable=False, initializer=0.0)
-    # learning_rate = tf.get_variable(name='learning_rate', dtype='float32', trainable=False, initializer=tf.constant(args.learning_rate))
-    learning_rate = tf.train.exponential_decay(args.learning_rate, global_step, args.lr_decay_steps, args.lr_decay_rate)
+    learning_rate = tf.get_variable(name='learning_rate', dtype='float32', trainable=False, initializer=tf.constant(args.learning_rate))
+
     # output logit from NN
-    output = RandWire.my_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
+    output = RandWire.my_regime3(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
                                 args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False, training)
     # output = RandWire.small_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
     #                             args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False,
@@ -95,7 +91,8 @@ def main(args):
         writer = tf.summary.FileWriter(args.checkpoint_dir + '/log', sess.graph)
 
         sess.run(tf.global_variables_initializer())
-        train_iterator = iter_utils.batch_iterator(args.train_record_dir, args.epochs, args.batch_size, [lambda image, label: iter_utils.pad_and_crop(image, label, args.image_shape, 4), iter_utils.flip], True)
+        augmentations = [lambda image, label: iter_utils.pad_and_crop(image, label, args.image_shape, 4), iter_utils.flip]
+        train_iterator = iter_utils.batch_iterator(args.train_record_dir, args.epochs, args.batch_size, augmentations, True)
         train_images_batch, train_labels_batch = train_iterator.get_next()
         val_iterator = iter_utils.batch_iterator(args.val_record_dir, args.epochs, args.batch_size)
         val_images_batch, val_labels_batch = val_iterator.get_next()
@@ -118,9 +115,9 @@ def main(args):
 
         for epoch_ in range(init_epoch + 1, args.epochs + 1):
 
-            # if epoch_ == int(args.epochs * 0.5) or epoch_ == int(args.epochs * 0.75):
-            #     learning_rate = learning_rate / 10
-            #     print('learning rate change ', sess.run(learning_rate))
+            if epoch_ == int(args.epochs * 0.5) or epoch_ == int(args.epochs * 0.75):
+                learning_rate = learning_rate / 10
+                print('learning rate change ', sess.run(learning_rate))
 
             # train
             while gstep * args.batch_size < epoch_ * args.train_set_size:
@@ -156,12 +153,14 @@ def main(args):
                         sess.run(val_iterator.initializer)
                         break
 
+            saver.save(sess, args.checkpoint_dir + '/' + args.checkpoint_name, global_step=global_step)
+
             predictions = np.concatenate(predictions)
             print('best: ', best_accuracy.eval(), '\ncurrent: ', np.mean(predictions))
             if best_accuracy.eval() < np.mean(predictions):
                 print('save checkpoint')
                 best_accuracy = tf.assign(best_accuracy, np.mean(predictions))
-                saver.save(sess, args.checkpoint_dir + '/' + args.checkpoint_name, global_step=global_step)
+                saver.save(sess, args.checkpoint_dir + '/best/' + args.checkpoint_name)
 
 
 if __name__ == '__main__':
