@@ -26,12 +26,12 @@ Options:
 
 ## Experiments
 
-I trained on Cifar10 dataset and get 90.78% on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory.
+I trained on Cifar10 dataset and get 91.11% on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory.
 ## Training
 
 **Cifar 10**
 ```sh
-python train.py --class_num 10 --image_shape 32 32 3 --stages 5 --channel_count 64 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --lr_decay_rate 0.96 --lr_decay_steps 2000 --train_set_size 50000 --val_set_size 10000 --batch_size 64 --epochs 300 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar10 --train_record_dir ./dataset/cifar10/train.tfrecord --val_record_dir ./dataset/cifar10/test.tfrecord
+python train.py --class_num 10 --image_shape 32 32 3 --stages 4 --channel_count 109 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 100 --epochs 100 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar10 --train_record_dir ./dataset/cifar10/train.tfrecord --val_record_dir ./dataset/cifar10/test.tfrecord
 ```
 
 Options:
@@ -42,8 +42,6 @@ Options:
 - `--graph_model` (str) - currently randwire has 3 random graph models. you can choose from 'er', 'ba' and 'ws'.
 - `--graph_param` (float nargs) - first value is node count. for 'er' and 'ba', there are one extra parameter so it would be like `32 0.4` or `32 7`. for 'ws' there are two extra parameters like above.
 - `--learning_rate` (float) - initial learning rate
-- `--lr_decacy_rate` (float) - learning rate decay rate for exponential decay
-- `--lr_decay_steps` (int) - learning rate decay steps for exponential decay
 - `--momentum` (float) - momentum from momentum optimizer
 - `--weight_decay` (float) - weight decay factor
 - `--train_set_size` (int) - number of training data. Cifar10 has 50000 data.
@@ -57,7 +55,7 @@ Options:
 
 **MNIST**
 ```sh
-python train.py --class_num 10 --image_shape 28 28 1 --stages 4 --channel_count 32 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --lr_decay_rate 0.96 --lr_decay_steps 2000 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 64 --epochs 300 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar10 --train_record_dir ./dataset/cifar10/train.tfrecord --val_record_dir ./dataset/cifar10/test.tfrecord
+python train.py --class_num 10 --image_shape 28 28 1 --stages 4 --channel_count 109 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 100 --epochs 100 --checkpoint_dir ./checkpoint --checkpoint_name randwire_mnist --train_record_dir ./dataset/mnist/train.tfrecord --val_record_dir ./dataset/mnist/test.tfrecord
 ```
 
 Options:
@@ -65,7 +63,7 @@ Options:
 
 ## Testing
 ```sh
-python test.py --class_num --checkpoint_dir ./checkpoint --test_record_dir ./dataset/cifar10/test.tfrecord --batch_size 256
+python test.py --class_num --checkpoint_dir ./checkpoint/best --test_record_dir ./dataset/cifar10/test.tfrecord --batch_size 256
 ```
 Options:
 - `--class_num` (int) - the number of classes
@@ -77,9 +75,9 @@ test.py loads network graph and tensors from meta data and evalutes.
 
 **Implementation Details**
 
-- I used exponential learning rate decay.
+- Learning rate decreases by multiplying 0.1 in 50% and 75% of entire training step.
 
-- I made an option `init_subsample` in `my_regime` and `small_regime` in `RandWire.py` not to use stride 2 for the initial convolutional layer since cifar10 and mnist has low resolution. if you set `init_subsample` False, then it will use stride 2.
+- I made an option `init_subsample` in `my_regime` and `small_regime` in `RandWire.py` which do not to use stride 2 for the initial convolutional layer since cifar10 and mnist has low resolution. if you set `init_subsample` False, then it will use stride 2.
 
 - While training, it will save the checkpoint with best validation accuracy.
 
@@ -90,6 +88,7 @@ test.py loads network graph and tensors from meta data and evalutes.
 - I added dropout layer after the Relu-Conv-BN triplet unit for regularization. You can set dropout_rate 0.0 to disable it.
 
 - In train.py, you can use `small_regime` or `regular_regime` instead of `my_regime`. `my_regime` is just for experimental purpose.
+
 ```python
   # output logit from NN
   output = RandWire.my_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
