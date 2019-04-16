@@ -9,7 +9,7 @@ from dataset import iter_utils
 def args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--class_num', type=int, default=10, help='number of class')  # number of class
-    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint', help='directory for checkpoint')  # directory for checkpoint
+    parser.add_argument('--checkpoint_dir', type=str, default='./checkpoint/best', help='directory for checkpoint')  # directory for checkpoint
     parser.add_argument('--test_record_dir', type=str, default='./dataset/cifar10/test.tfrecord', help='directory for test record')  # directory for test images
     parser.add_argument('--batch_size', type=int, default=256, help='number of images for each batch')  # number of images for each batch
     args = parser.parse_args()
