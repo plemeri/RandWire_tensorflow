@@ -1,4 +1,4 @@
-# RandWireNN_tensorflow
+# RandWire_tensorflow
 tensorflow implementation of [Exploring Randomly Wired Neural Networks for Image Recognition](https://arxiv.org/abs/1904.01569) using **Cifar10, MNIST**
 
 ## Requirements
@@ -26,7 +26,9 @@ Options:
 
 ## Experiments
 
-I trained on Cifar10 dataset and get 92.24% on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory and try running test script to check the accuracy.
+I trained on Cifar10 dataset and get `92.24%` on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory and try running test script to check the accuracy.
+
+(19.04.16 added) I trained on Cifar100 dataset and get `74.37%` on test set. You can download pretrained network from same link above.
 
 ## Training
 
@@ -57,6 +59,15 @@ Options:
 **MNIST**
 ```sh
 python train.py --class_num 10 --image_shape 28 28 1 --stages 4 --channel_count 109 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 100 --epochs 100 --checkpoint_dir ./checkpoint --checkpoint_name randwire_mnist --train_record_dir ./dataset/mnist/train.tfrecord --val_record_dir ./dataset/mnist/test.tfrecord
+```
+
+Options:
+- options are same as Cifar10
+
+**Cifar100**
+(19.04.16 added)
+```sh
+python train.py --class_num 100 --image_shape 32 32 3 --stages 4 --channel_count 109 --graph_model ws --graph_param 32 4 0.75 --dropout_rate 0.0 --learning_rate 0.1 --momentum 0.9 --weight_decay 0.0001 --train_set_size 50000 --val_set_size 10000 --batch_size 100 --epochs 100 --checkpoint_dir ./checkpoint --checkpoint_name randwire_cifar100 --train_record_dir ./dataset/cifar100/train.tfrecord --val_record_dir ./dataset/cifar100/test.tfrecord
 ```
 
 Options:
