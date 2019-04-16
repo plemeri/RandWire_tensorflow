@@ -30,8 +30,8 @@ def build_stage(input, filters, dropout_rate, training, graph_data, scope):
                         interm = weight[0] * interms[in_node[0]]
                         for idx in range(1, len(in_node)):
                             interm += weight[idx] * interms[in_node[idx]]
-                        interm = conv_block(interms[in_node[0]], 3, filters, 1, dropout_rate, training, scope='node' + str(node))
-                        interms[node] = interm
+                    interm = conv_block(interm, 3, filters, 1, dropout_rate, training, scope='node' + str(node))
+                    interms[node] = interm
                 elif len(in_node) == 1:
                     interm = conv_block(interms[in_node[0]], 3, filters, 1, dropout_rate, training, scope='node' + str(node))
                     interms[node] = interm
