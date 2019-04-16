@@ -59,9 +59,8 @@ def small_regime(input, stages, filters, classes, dropout_rate, graph_model, gra
         input = build_stage(input, filters, dropout_rate, training, graph_data, 'conv' + str(stage))
         filters *= 2
 
-    input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'classifier')
-
     with tf.variable_scope('classifier'):
+        input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'conv_block_classifier')
         input = tf.layers.average_pooling2d(input, pool_size=input.shape[1:3], strides=[1, 1])
         input = tf.layers.flatten(input)
         input = tf.layers.dense(input, units=classes)
@@ -77,9 +76,9 @@ def regular_regime(input, stages, filters, classes, dropout_rate, graph_model, g
         graph_data = gg.graph_generator(graph_model, graph_param, graph_file_path, 'conv' + str(stage) + '_' + graph_model)
         input = build_stage(input, filters, dropout_rate, training, graph_data, 'conv' + str(stage))
         filters *= 2
-
-    input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'classifier')
+    
     with tf.variable_scope('classifier'):
+        input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'conv_block_classifier')
         input = tf.layers.average_pooling2d(input, pool_size=input.shape[1:3], strides=[1, 1])
         input = tf.layers.flatten(input)
         input = tf.layers.dense(input, units=classes)
@@ -102,8 +101,8 @@ def my_regime(input, stages, filters, classes, dropout_rate, graph_model, graph_
         input = build_stage(input, filters, dropout_rate, training, graph_data, 'conv' + str(stage))
         filters *= 2
 
-    input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'classifier')
     with tf.variable_scope('classifier'):
+        input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'conv_block_classifier')
         input = tf.layers.average_pooling2d(input, pool_size=input.shape[1:3], strides=[1, 1])
         input = tf.layers.flatten(input)
         input = tf.layers.dropout(input, rate=0.3, training=training)
