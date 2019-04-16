@@ -46,8 +46,12 @@ def main(args):
     training = tf.placeholder('bool', name='training')  # placeholder for training boolean (is training)
     global_step = tf.get_variable(name='global_step', shape=[], dtype='int64', trainable=False)  # variable for global step
     best_accuracy = tf.get_variable(name='best_accuracy', dtype='float32', trainable=False, initializer=0.0)
-    learning_rate = tf.get_variable(name='learning_rate', dtype='float32', trainable=False, initializer=tf.constant(args.learning_rate))
-
+    
+    steps_per_epoch = round(args.train_set_size / args.batch_size)
+    learning_rate = tf.train.piecewise_constant(global_step, [round(steps_per_epoch * 0.5 * args.epochs),
+                                                              round(steps_per_epoch * 0.75 * args.epochs)],
+                                                [args.learning_rate, 0.1 * args.learning_rate,
+                                                 0.01 * args.learning_rate])
     # output logit from NN
     output = RandWire.my_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
                                 args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False, training)
@@ -104,21 +108,16 @@ def main(args):
         # restoring checkpoint
         try:
             saver.restore(sess, tf.train.latest_checkpoint(args.checkpoint_dir))
-            print('checkpoint restored')
+            print('checkpoint restored. train from checkpoint')
         except:
-            print('failed to load checkpoint')
+            print('failed to load checkpoint. train from the beginning')
 
         #get initial step
         gstep = sess.run(global_step)
-        steps_per_epoch = round(args.train_set_size / args.batch_size)
         init_epoch = round(gstep / steps_per_epoch)
         init_epoch = int(init_epoch)
 
         for epoch_ in range(init_epoch + 1, args.epochs + 1):
-
-            if epoch_ == int(args.epochs * 0.5) or epoch_ == int(args.epochs * 0.75):
-                learning_rate = learning_rate / 10
-                print('learning rate change ', sess.run(learning_rate))
 
             # train
             while gstep * args.batch_size < epoch_ * args.train_set_size:
