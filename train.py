@@ -14,7 +14,7 @@ def args():
     parser.add_argument('--channel_count', type=int, default=109)
     parser.add_argument('--graph_model', type=str, default='ws')
     parser.add_argument('--graph_param', type=float, nargs='+', default=[32, 4, 0.75])
-    parser.add_argument('--dropout_rate', type=float, default=0.0, help='dropout rate for dropout')  # dropout rate for dropout
+    parser.add_argument('--dropout_rate', type=float, default=0.2, help='dropout rate for dropout')  # dropout rate for dropout
     parser.add_argument('--learning_rate', type=float, default=1e-1, help='initial learning rate')  # initial learning rate
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum for momentum optimizer')  # momentum for momentum optimizer
     parser.add_argument('--weight_decay', type=float, default=1e-4, help='weight decay factor')  # weight decay factor
