@@ -2,6 +2,8 @@
 # RandWire_tensorflow
 tensorflow implementation of [Exploring Randomly Wired Neural Networks for Image Recognition](https://arxiv.org/abs/1904.01569) using **Cifar10, MNIST**
 
+![alt text](https://raw.githubusercontent.com/swdsld/RandWire_tensorflow/master/tensorboard.PNG)
+
 ## Requirements
 * Tensorflow 1.x - GPU version recommended
 * Python 3.x
