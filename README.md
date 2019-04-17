@@ -27,7 +27,9 @@ Options:
 
 ## Experiments
 
-I trained on Cifar10 dataset and get `92.26%` on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory and try running test script to check the accuracy.
+I trained on Cifar10 dataset and get `93.25%` on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory and try running test script to check the accuracy.
+
+This model has 0.8M parameters which is almost same number on ResNet for Cifar10 with 56 layers. On their paper, the error was 6.97 and with almost same number of parameters, RandWire produced 6.75 % of error.
 
 (19.04.16 added) I trained on Cifar100 dataset and get `74.49%` on test set. You can download pretrained network from same link above.
 
