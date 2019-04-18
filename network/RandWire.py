@@ -109,3 +109,29 @@ def my_regime(input, stages, filters, classes, dropout_rate, graph_model, graph_
         input = tf.layers.dense(input, units=classes)
 
     return input
+
+def my_small_regime(input, stages, filters, classes, dropout_rate, graph_model, graph_param, graph_file_path, init_subsample, training): #regular regime 기반
+    with tf.variable_scope('conv1'):
+        if init_subsample is True:
+            input = tf.layers.separable_conv2d(input, filters=int(filters/2), kernel_size=[3, 3], strides=[2, 2], padding='SAME')
+            input = tf.layers.batch_normalization(input, training=training)
+        else:
+            input = tf.layers.separable_conv2d(input, filters=int(filters / 2), kernel_size=[3, 3], strides=[1, 1],
+                                               padding='SAME')
+            input = tf.layers.batch_normalization(input, training=training)
+
+    input = conv_block(input, 3, filters, 1, dropout_rate, training, 'conv2')
+
+    for stage in range(3, stages+1):
+        graph_data = gg.graph_generator(graph_model, graph_param, graph_file_path, 'conv' + str(stage) + '_' + graph_model)
+        input = build_stage(input, filters, dropout_rate, training, graph_data, 'conv' + str(stage))
+        filters *= 2
+
+    with tf.variable_scope('classifier'):
+        input = conv_block(input, 1, 1280, 1, dropout_rate, training, 'conv_block_classifier')
+        input = tf.layers.average_pooling2d(input, pool_size=input.shape[1:3], strides=[1, 1])
+        input = tf.layers.flatten(input)
+        input = tf.layers.dropout(input, rate=0.3, training=training)
+        input = tf.layers.dense(input, units=classes)
+
+    return input
