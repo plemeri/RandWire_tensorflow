@@ -31,9 +31,9 @@ Options:
 
 Datasets | Model | Parameters | Accuracy | Epoch
 ----------|----------|----------|----------|----------
-CIFAR-10 | ResNet110(Paper) | 1.7M | 93.57% | 300
-CIFAR-10 | RandWire(my_small_regime) | 1.2M | 93.64% | 60
-CIFAR-100 | RandWire(small_regime) | 8M | 74.49% | 100
+CIFAR-10 | ResNet110 (Paper) | 1.7M | 93.57% | 300
+CIFAR-10 | RandWire (my_small_regime) | 1.2M | 93.64% | 60
+CIFAR-100 | RandWire (my_regime) | 8M | 74.49% | 100
 
 (19.04.18 changed) I trained on Cifar10 dataset and get `6.36 %` error on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory and try running test script to check the accuracy.
 The number of parameters used for cifar10 model is aboud 1.2M, which is similar result on ResNet-110 (6.43 %) which used 1.7M parameters.
