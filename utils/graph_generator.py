@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 
 def graph_generator(model, graph_param, save_path, file_name):
+    graph_param[0] = int(graph_param[0])
     if model == 'ws':
         graph = nx.random_graphs.connected_watts_strogatz_graph(*graph_param)
     elif model == 'er':
