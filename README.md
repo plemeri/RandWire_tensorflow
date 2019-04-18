@@ -31,6 +31,7 @@ Options:
 
 Datasets | Model | Parameters | Accuracy | Epoch
 ----------|----------|----------|----------|----------
+CIFAR-10 | ResNet110(Paper) | 1.7M | 93.57% | 300
 CIFAR-10 | RandWire(my_small_regime) | 1.2M | 93.64% | 60
 CIFAR-100 | RandWire(small_regime) | 8M | 74.49% | 100
 
