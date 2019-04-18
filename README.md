@@ -29,6 +29,11 @@ Options:
 
 ## Experiments
 
+Datasets | Model | Parameters | Accuracy | Epoch
+----------|----------|----------|----------|----------
+CIFAR-10 | RandWire(my_small_regime) | 1.2M | 93.64% | 60
+CIFAR-100 | RandWire(small_regime) | 8M | 74.49% | 100
+
 (19.04.18 changed) I trained on Cifar10 dataset and get `6.36 %` error on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory and try running test script to check the accuracy.
 The number of parameters used for cifar10 model is aboud 1.2M, which is similar result on ResNet-110 (6.43 %) which used 1.7M parameters.
 
@@ -93,7 +98,7 @@ test.py loads network graph and tensors from meta data and evalutes.
 
 - Learning rate decreases by multiplying 0.1 in 50% and 75% of entire training step.
 
-- I made an option `init_subsample` in `my_regime` and `small_regime` in `RandWire.py` which do not to use stride 2 for the initial convolutional layer since cifar10 and mnist has low resolution. if you set `init_subsample` False, then it will use stride 2.
+- I made an option `init_subsample` in `my_regime`, `my_small_regime` and `small_regime` in `RandWire.py` which do not to use stride 2 for the initial convolutional layer since cifar10 and mnist has low resolution. if you set `init_subsample` False, then it will use stride 2.
 
 - While training, it will save the checkpoint with best validation accuracy.
 
@@ -103,11 +108,11 @@ test.py loads network graph and tensors from meta data and evalutes.
 
 - I added dropout layer after the Relu-Conv-BN triplet unit for regularization. You can set dropout_rate 0.0 to disable it.
 
-- In train.py, you can use `small_regime` or `regular_regime` instead of `my_regime`. `my_regime` is just for experimental purpose.
+- In train.py, you can use `small_regime` or `regular_regime` instead of `my_regime` and `my_small_regime`. Both do not use stride 2 in order to prevent subsampling to maintain the spatial information since cifar datasets are not large enough.
 
 ```python
   # output logit from NN
-  output = RandWire.my_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
+  output = RandWire.my_small_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
                               args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False, training)
   # output = RandWire.small_regime(images, args.stages, args.channel_count, args.class_num, args.dropout_rate,
   #                             args.graph_model, args.graph_param, args.checkpoint_dir + '/' + 'graphs', False,
