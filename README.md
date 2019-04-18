@@ -30,7 +30,7 @@ Options:
 ## Experiments
 
 (19.04.18 changed) I trained on Cifar10 dataset and get `6.36 %` error on test set. You can download pretrained network from [here](https://drive.google.com/drive/folders/1Pi9Z306S3fvBLBOy6oPDGQDNzsKdrtzG?usp=sharing). Unzip the file and move all files under `checkpoint` file or your checkpoint directory and try running test script to check the accuracy.
-The number of parameters used for cifar10 model is aboud 1.2M, which is similar result on ResNet-101 (6.43 %) which used 1.7M parameters.
+The number of parameters used for cifar10 model is aboud 1.2M, which is similar result on ResNet-110 (6.43 %) which used 1.7M parameters.
 
 (19.04.16 added) I trained on Cifar100 dataset and get `74.49%` accuracy on test set. You can download pretrained network from same link above.
 
