@@ -5,10 +5,12 @@ import matplotlib.pyplot as plt
 def graph_generator(model, graph_param, save_path, file_name):
     graph_param[0] = int(graph_param[0])
     if model == 'ws':
+        graph_param[1] = int(graph_param[1])
         graph = nx.random_graphs.connected_watts_strogatz_graph(*graph_param)
     elif model == 'er':
         graph = nx.random_graphs.erdos_renyi_graph(*graph_param)
     elif model == 'ba':
+        graph_param[1] = int(graph_param[1])
         graph = nx.random_graphs.barabasi_albert_graph(*graph_param)
 
     if os.path.isfile(save_path + '/' + file_name + '.yaml') is True:
